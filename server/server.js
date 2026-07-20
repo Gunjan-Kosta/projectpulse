@@ -31,8 +31,13 @@ if (!fs.existsSync(uploadsPath)) {
 }
 app.use('/uploads', express.static(uploadsPath));
 
-// Import Models for Seeding/Socket
+// Import Models for Mongoose Schema Registration
 const User = require('./models/User');
+const Team = require('./models/Team');
+const Project = require('./models/Project');
+const Milestone = require('./models/Milestone');
+const Task = require('./models/Task');
+const Announcement = require('./models/Announcement');
 const Message = require('./models/Message');
 
 // Seed Default Admin Account
