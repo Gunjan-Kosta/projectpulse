@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const connectDB = async (onConnected) => {
   try {
-    const dbUri = process.env.MONGODB_URI || process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/projectpulse';
+    const defaultAtlasUri = 'mongodb+srv://gunjan_admin:PulsePassword123@cluster0.ufglwsm.mongodb.net/projectpulse?appName=Cluster0&compressors=zlib';
+    const dbUri = process.env.MONGODB_URI || process.env.MONGO_URI || defaultAtlasUri;
     const conn = await mongoose.connect(dbUri);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
     if (onConnected) await onConnected();
