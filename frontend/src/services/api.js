@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+  ? ''
+  : 'https://projectpulse-backend.onrender.com';
+
 const api = axios.create({
-  baseURL: '', // Uses relative paths, Vite dev proxy maps /api to localhost:5000
+  baseURL: API_BASE_URL,
 });
 
 // Request interceptor to add bearer token

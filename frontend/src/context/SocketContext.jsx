@@ -10,8 +10,9 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (user) {
-      // Connect to Socket.io backend
-      const socketUrl = window.location.hostname === 'localhost' ? 'http://localhost:5000' : window.location.origin;
+      const socketUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+        ? 'http://localhost:5000'
+        : 'https://projectpulse-backend.onrender.com';
       const newSocket = io(socketUrl);
       setSocket(newSocket);
 
