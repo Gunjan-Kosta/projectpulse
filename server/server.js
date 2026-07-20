@@ -10,9 +10,6 @@ const connectDB = require('./config/db');
 // Load environment variables
 dotenv.config();
 
-// Connect to Database
-connectDB();
-
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -56,7 +53,9 @@ const seedAdmin = async () => {
     console.error('Error seeding admin account:', error);
   }
 };
-seedAdmin();
+
+// Connect to Database and seed admin
+connectDB(seedAdmin);
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
