@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import Spinner from '../components/Spinner';
 import toast from 'react-hot-toast';
-import { FiBell, FiPlusCircle, FiX, FiTrash2, FiUser, FiCalendar, FiMegaphone } from 'react-icons/fi';
+import { FiBell, FiPlusCircle, FiX, FiTrash2, FiUser, FiCalendar } from 'react-icons/fi';
 
 const Announcements = () => {
   const { user } = useAuth();
@@ -189,7 +189,7 @@ const Announcements = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm px-4">
           <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 w-full max-w-md rounded-3xl p-6 shadow-2xl animate-fade-in">
             <div className="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
-              <h3 className="font-bold text-slate-900 dark:text-white font-poppins flex items-center gap-2"><FiMegaphone className="text-primary" /> Publish Announcement</h3>
+              <h3 className="font-bold text-slate-900 dark:text-white font-poppins flex items-center gap-2"><FiBell className="text-primary" /> Publish Announcement</h3>
               <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-slate-600"><FiX size={18} /></button>
             </div>
 
