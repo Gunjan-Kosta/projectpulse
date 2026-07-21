@@ -300,7 +300,7 @@ const Teams = () => {
                             {u.role}
                           </span>
                         </td>
-                        <td className="p-4 text-slate-500 font-semibold">{u.team?.name || 'Unassigned'}</td>
+                        <td className="p-4 text-slate-500 font-semibold">{u.teamDisplay || u.team?.name || 'Unassigned'}</td>
                         <td className="p-4 pr-6 text-right">
                           <button
                             onClick={() => handleResetPassword(u._id, u.name)}

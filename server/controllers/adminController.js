@@ -63,8 +63,32 @@ const getUsers = async (req, res) => {
   }
 
   try {
-    const users = await User.find(filter).select('-password').populate('team');
-    return res.json({ success: true, users });
+    const users = await User.find(filter).select('-password').populate('team').lean();
+    const teams = await Team.find({}).select('name mentor leader members').lean();
+
+    const formattedUsers = users.map(u => {
+      if (u.role === 'mentor') {
+        const mentoredTeams = teams.filter(t => String(t.mentor) === String(u._id));
+        const teamNames = mentoredTeams.map(t => t.name).join(', ');
+        return {
+          ...u,
+          teamDisplay: teamNames ? teamNames : 'Unassigned'
+        };
+      } else if (u.role === 'admin') {
+        return {
+          ...u,
+          teamDisplay: 'N/A'
+        };
+      } else {
+        const memberTeam = u.team ? u.team.name : teams.find(t => String(t.leader) === String(u._id) || t.members.some(m => String(m) === String(u._id)))?.name;
+        return {
+          ...u,
+          teamDisplay: memberTeam || 'Unassigned'
+        };
+      }
+    });
+
+    return res.json({ success: true, users: formattedUsers });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ success: false, message: 'Server error' });
