@@ -28,15 +28,25 @@ const getAnnouncements = async (req, res) => {
         .sort({ createdAt: -1 });
     } else {
       // Leader/Members see global announcements and announcements targeting their team
-      const query = { scope: 'all' };
+      const userTeams = await Team.find({
+        $or: [
+          { leader: req.user._id },
+          { members: req.user._id },
+          ...(req.user.team ? [{ _id: req.user.team }] : [])
+        ]
+      }).select('_id');
+
+      const teamIds = userTeams.map(t => t._id);
       if (req.user.team) {
-        query.$or = [
-          { scope: 'all' },
-          { targetTeams: req.user.team }
-        ];
+        teamIds.push(req.user.team);
       }
-      
-      announcements = await Announcement.find(query)
+
+      announcements = await Announcement.find({
+        $or: [
+          { scope: 'all' },
+          { targetTeams: { $in: teamIds } }
+        ]
+      })
         .populate('createdBy', 'name role')
         .sort({ createdAt: -1 });
     }
