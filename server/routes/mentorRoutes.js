@@ -5,6 +5,7 @@ const {
   getPendingMilestones,
   reviewMilestone,
   createMentorAnnouncement,
+  deleteMentorAnnouncement,
   getMentorDashboard
 } = require('../controllers/mentorController');
 const { protect, authorize } = require('../middleware/auth');
@@ -16,6 +17,7 @@ router.get('/teams', getAssignedTeams);
 router.get('/milestones', getPendingMilestones);
 router.put('/milestones/:id', reviewMilestone);
 router.post('/announcements', createMentorAnnouncement);
+router.delete('/announcements/:id', deleteMentorAnnouncement);
 router.get('/dashboard', getMentorDashboard);
 
 module.exports = router;

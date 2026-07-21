@@ -112,6 +112,23 @@ const createMentorAnnouncement = async (req, res) => {
   }
 };
 
+// @desc    Delete mentor announcement
+// @route   DELETE /api/mentor/announcements/:id
+// @access  Private/Mentor
+const deleteMentorAnnouncement = async (req, res) => {
+  try {
+    const announcement = await Announcement.findOne({ _id: req.params.id, createdBy: req.user._id });
+    if (!announcement) {
+      return res.status(404).json({ success: false, message: 'Announcement not found or unauthorized' });
+    }
+    await announcement.deleteOne();
+    return res.json({ success: true, message: 'Announcement deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: 'Server error' });
+  }
+};
+
 // @desc    Get Mentor Dashboard Stats
 // @route   GET /api/mentor/dashboard
 // @access  Private/Mentor
@@ -184,5 +201,6 @@ module.exports = {
   getPendingMilestones,
   reviewMilestone,
   createMentorAnnouncement,
+  deleteMentorAnnouncement,
   getMentorDashboard
 };

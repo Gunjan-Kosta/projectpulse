@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import Spinner from '../components/Spinner';
 import toast from 'react-hot-toast';
-import { FiBell, FiPlusCircle, FiX, FiTrash2, FiUser, FiCalendar, FiMap } from 'react-icons/fi';
+import { FiBell, FiPlusCircle, FiX, FiTrash2, FiUser, FiCalendar, FiMegaphone } from 'react-icons/fi';
 
 const Announcements = () => {
   const { user } = useAuth();
@@ -66,10 +66,7 @@ const Announcements = () => {
     try {
       setSubmitting(true);
       let res;
-      if (user.role === 'admin') {
-        const { data } = await api.post('/api/admin/announcements', { title, content });
-        res = data;
-      } else if (user.role === 'mentor') {
+      if (user.role === 'mentor') {
         if (selectedTeams.length === 0) {
           setSubmitting(false);
           return toast.error('Please select at least one target team');
@@ -100,7 +97,8 @@ const Announcements = () => {
   const handleDeleteAnnouncement = async (id) => {
     if (!window.confirm('Are you sure you want to delete this announcement?')) return;
     try {
-      const { data: res } = await api.delete(`/api/admin/announcements/${id}`);
+      const deleteEndpoint = user.role === 'mentor' ? `/api/mentor/announcements/${id}` : `/api/admin/announcements/${id}`;
+      const { data: res } = await api.delete(deleteEndpoint);
       if (res.success) {
         toast.success('Announcement deleted');
         loadAnnouncements();
@@ -130,7 +128,7 @@ const Announcements = () => {
           <h1 className="text-2xl font-bold font-poppins text-slate-800 dark:text-white">Announcements</h1>
           <p className="text-slate-500 dark:text-slate-400 text-xs">Broadcast notice boards and project guidelines.</p>
         </div>
-        {(user.role === 'admin' || user.role === 'mentor') && (
+        {user.role === 'mentor' && (
           <button
             onClick={() => setShowCreateModal(true)}
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-primary hover:bg-primary-dark text-white text-xs font-semibold shadow-lg shadow-primary/20 hover:-translate-y-0.5 transition-all duration-200"
